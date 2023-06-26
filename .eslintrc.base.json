@@ -18,7 +18,7 @@
               },
               {
                 "sourceTag": "type:feature",
-                "onlyDependOnLibsWithTags": ["type:feature", "type:ui"]
+                "onlyDependOnLibsWithTags": ["type:feature", "type:ui", "type:data-access"]
               },
               {
                 "sourceTag": "type:ui",
@@ -26,23 +26,27 @@
               },
               {
                 "sourceTag": "scope:community",
-                "onlyDependOnLibsWithTags": ["scope:community", "scope:shared"]
+                "onlyDependOnLibsWithTags": ["scope:community", "scope:shared", "scope:data"]
               },
               {
                 "sourceTag": "scope:lessons",
-                "onlyDependOnLibsWithTags": ["scope:lessons", "scope:shared"]
+                "onlyDependOnLibsWithTags": ["scope:lessons", "scope:shared", "scope:data"]
               },
               {
                 "sourceTag": "scope:profile",
-                "onlyDependOnLibsWithTags": ["scope:profile", "scope:shared"]
+                "onlyDependOnLibsWithTags": ["scope:profile", "scope:shared", "scope:data"]
               },
               {
                 "sourceTag": "scope:resources",
-                "onlyDependOnLibsWithTags": ["scope:resources", "scope:shared"]
+                "onlyDependOnLibsWithTags": ["scope:resources", "scope:shared", "scope:data"]
               },
               {
                 "sourceTag": "scope:shared",
                 "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "scope:data",
+                "onlyDependOnLibsWithTags": ["scope:data"]
               }
             ]
           }
