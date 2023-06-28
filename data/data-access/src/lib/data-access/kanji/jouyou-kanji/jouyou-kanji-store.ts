@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { ComponentStore } from "@ngrx/component-store";
+import { Injectable } from '@angular/core';
+import { ComponentStore } from '@ngrx/component-store';
 
 export interface JouyouKanjiState {
   jouyouKanji: string[];
