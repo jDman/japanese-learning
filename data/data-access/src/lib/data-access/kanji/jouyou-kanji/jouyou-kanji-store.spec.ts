@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { JouyouKanjiStore } from './jouyou-kanji-store';
+import { first, firstValueFrom } from 'rxjs';
 
 describe(JouyouKanjiStore.name, () => {
   function setup() {
@@ -16,5 +17,15 @@ describe(JouyouKanjiStore.name, () => {
     const { store } = setup();
 
     expect(store).not.toBeNull();
-  }); 
+  });
+
+  describe('jouyouKanji$', () => {
+    it('initially emits empty jouyouKanji list', async () => {
+        const { store } = setup();
+
+        const jouyouKanji = await firstValueFrom(store.jouyouKanji$.pipe(first()));
+
+        expect(jouyouKanji).toEqual([]);
+    });
+  });
 });
