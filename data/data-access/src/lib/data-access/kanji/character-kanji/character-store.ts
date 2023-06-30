@@ -4,14 +4,17 @@ import { CharacterRecord } from './character-interface';
 import { Observable, switchMap } from 'rxjs';
 import { CharacterHttpService } from './character-http.service';
 
-export interface CharacterState {
+interface CharacterState {
   character: CharacterRecord | null;
 }
 
 @Injectable()
 export class CharacterStore extends ComponentStore<CharacterState> {
   readonly character$: Observable<CharacterRecord | null> = this.select(
-    state => state.character
+    state => state.character,
+    {
+      debounce: true
+    }
   );
 
   constructor(private http: CharacterHttpService) {

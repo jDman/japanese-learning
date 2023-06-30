@@ -3,14 +3,17 @@ import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Observable, switchMap } from 'rxjs';
 import { JinmeiyouKanjiHttpService } from './jinmeiyou-kanji.service';
 
-export interface JinmeiyouKanjiState {
+interface JinmeiyouKanjiState {
   jinmeiyouKanji: string[];
 }
 
 @Injectable()
 export class JinmeiyouKanjiStore extends ComponentStore<JinmeiyouKanjiState> {
   readonly jinmeiyouKanji$: Observable<string[]> = this.select(
-    state => state.jinmeiyouKanji
+    state => state.jinmeiyouKanji,
+    {
+      debounce: true
+    }
   );
 
   constructor(private http: JinmeiyouKanjiHttpService) {
