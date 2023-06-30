@@ -6,7 +6,6 @@ describe('GradedKanjiService', () => {
   let service: GradedKanjiService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     service = TestBed.inject(GradedKanjiService);
   });
 

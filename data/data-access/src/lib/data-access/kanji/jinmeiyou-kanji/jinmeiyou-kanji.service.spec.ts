@@ -1,16 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 
-import { JinmeiyouKanjiService } from './jinmeiyou-kanji.service';
+import { JinmeiyouKanjiHttpService } from './jinmeiyou-kanji.service';
+import { firstValueFrom } from 'rxjs';
 
-describe('JinmeiyouKanjiService', () => {
-  let service: JinmeiyouKanjiService;
+describe(JinmeiyouKanjiHttpService.name, () => {
+  let service: JinmeiyouKanjiHttpService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(JinmeiyouKanjiService);
+    service = TestBed.inject(JinmeiyouKanjiHttpService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should initially return empty array', async () => {
+    const result = await firstValueFrom(service.get());
+
+    expect(result).toEqual([]);
   });
 });

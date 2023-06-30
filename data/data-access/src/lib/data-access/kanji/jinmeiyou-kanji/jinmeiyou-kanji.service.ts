@@ -5,7 +5,7 @@ import { baseUrl } from '../base-url';
 @Injectable({
   providedIn: 'root'
 })
-export class JinmeiyouKanjiService {
+export class JinmeiyouKanjiHttpService {
   private url = `${baseUrl}`;
 
   get(): Observable<string[]> {

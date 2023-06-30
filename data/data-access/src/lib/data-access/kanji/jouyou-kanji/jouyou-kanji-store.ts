@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ComponentStore } from '@ngrx/component-store';
-import { Observable } from 'rxjs';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { Observable, switchMap } from 'rxjs';
+import { JouyouKanjiHttpService } from './jouyou-kanji-http.service';
 
 export interface JouyouKanjiState {
   jouyouKanji: string[];
@@ -12,9 +13,22 @@ export class JouyouKanjiStore extends ComponentStore<JouyouKanjiState> {
     state => state.jouyouKanji
   );
 
-  constructor() {
+  constructor(private http: JouyouKanjiHttpService) {
     super(initialState);
   }
+
+  public loadJouyouKanji() {
+    this.loadJouyouKanjiFromQuery();
+  }
+
+  private loadJouyouKanjiFromQuery = this.effect<void>((kanji$) => kanji$.pipe(
+    switchMap(() => this.http.get().pipe(
+      tapResponse(
+        jouyouKanji => this.updateKanji(jouyouKanji),
+        () => this.updateKanji([])
+      )
+    ))
+  ));
 
   private updateKanji = this.updater<string[]>((state, jouyouKanji) => ({
     ...state,
