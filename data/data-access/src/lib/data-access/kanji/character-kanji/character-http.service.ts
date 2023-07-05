@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { baseUrl } from '../base-url';
 import { Observable, catchError, mergeMap, of, throwError } from 'rxjs';
 import { CharacterResponse } from './character-response-interface';
-import { CharacterErrorResponse } from './character-error-response-interface';
 import { CharacterRecord } from './character-record-interface';
 
 @Injectable({
@@ -14,7 +13,7 @@ export class CharacterHttpService {
 
   constructor(private readonly http: HttpClient) {}
 
-  get(characterQuery: string): Observable<CharacterRecord | HttpErrorResponse> {
+  get(characterQuery: string): Observable<CharacterRecord> {
     return this.http.get<CharacterResponse>(`${this.url}${characterQuery}`).pipe(
       mergeMap((response: CharacterResponse) => {
         return of({
@@ -28,7 +27,7 @@ export class CharacterHttpService {
         });
       }),
       catchError((err: HttpErrorResponse) => {
-        return of(err)
+        return throwError(() => new Error(err.error))
       })
     )
   }

@@ -6,27 +6,11 @@ import { baseUrl } from '../base-url';
 import { CharacterErrorResponse } from './character-error-response-interface';
 import { lastValueFrom } from 'rxjs';
 import { CharacterRecord } from './character-record-interface';
-import { HttpErrorResponse } from '@angular/common/http';
-import { fail } from 'assert';
+import { characterRecordMock } from './character-record-mock';
 
 describe(CharacterHttpService.name, () => {
   let service: CharacterHttpService;
   let controller: HttpTestingController;
-
-  const characterResponse: CharacterRecord = {
-    kanji: '字',
-    grade: 1,
-    stroke_count: 6,
-    meanings: [
-      'character',
-      'letter',
-      'word',
-      'section of village'
-    ],
-    kun_readings: ['あざ', 'あざな', '-な'],
-    on_readings: ['ジ'],
-    name_readings: []
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -59,15 +43,15 @@ describe(CharacterHttpService.name, () => {
 
     testRequest.flush(response);
 
-    expect(value).resolves.not.toEqual(characterResponse);
+    expect(value).resolves.not.toEqual(characterRecordMock);
   }));
 
   it('should map response to character data', waitForAsync(() => {
     // response
-    const response: CharacterRecord = characterResponse;
+    const response: CharacterRecord = characterRecordMock;
 
     service.get('字').subscribe(data => {
-      expect(data).toEqual(characterResponse);
+      expect(data).toEqual(characterRecordMock);
     });
 
     //request
@@ -81,10 +65,11 @@ describe(CharacterHttpService.name, () => {
 
   it('should catch an error when error response received', waitForAsync(() => {
     // response
-    const mockError = new ProgressEvent('an error occurred');
+    const errMsg = 'an error occurred';
 
     service.get('字').subscribe({
-      next: (res) => expect((res as CharacterErrorResponse).error).toEqual(mockError),
+      next: () => fail('a failure occurred'),
+      error: (err) => expect(err).toEqual(new Error(errMsg))
     });
 
     //request
@@ -93,6 +78,6 @@ describe(CharacterHttpService.name, () => {
       request.url.startsWith(baseUrl)
     );
 
-    testRequest.error(mockError);  
+    testRequest.flush(errMsg, { status: 404, statusText: 'Not Found' });  
   }));
 });

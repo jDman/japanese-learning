@@ -21,15 +21,18 @@ export class CharacterStore extends ComponentStore<CharacterState> {
     super(initialState);
   }
 
-  public loadCharacter(characterQuery: string) {
+  public loadCharacter(characterQuery: string): void {
     this.loadCharacterFromQuery(characterQuery);
   }
 
   private loadCharacterFromQuery = this.effect<string>((character$) => character$.pipe(
     switchMap((characterQuery) => this.http.get(characterQuery).pipe(
       tapResponse(
-        character => this.updateCharacter(character),
-        () => this.updateCharacter(null)
+        (character: CharacterRecord) => this.updateCharacter(character),
+        () => { 
+          console.log('#### errroooorrr');
+          return this.updateCharacter(null)
+        }
       )
     ))
   ));

@@ -1,16 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { CharacterStore } from './character-store';
-import { firstValueFrom } from 'rxjs';
+import { Observable, lastValueFrom, of, throwError } from 'rxjs';
+import { CharacterHttpService } from './character-http.service';
+import { characterRecordMock } from './character-record-mock';
+import { CharacterRecord } from './character-record-interface';
 
 describe(CharacterStore.name, () => {
-  function setup() {
+  function setup(httpGetSpy: jest.Mock<Observable<CharacterRecord>, []> = jest.fn()) {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [CharacterStore]
     });
 
+    const http = TestBed.inject(CharacterHttpService);
+    http.get = httpGetSpy;
     const store = TestBed.inject(CharacterStore);
 
     return {
@@ -25,12 +30,42 @@ describe(CharacterStore.name, () => {
   });
 
   describe('character$', () => {
-    it('initially emits null', async () => {
+    it('initially emits null', waitForAsync(() => {
       const { store } = setup();
 
-      const characters = await firstValueFrom(store.character$);
+      const characters = lastValueFrom(store.character$);
 
-      expect(characters).toEqual(null);
+      expect(characters).resolves.toEqual(null);
+    }));
+
+    describe('loadCharacter', () => {
+      it('loads a character record after called with successful return from api', waitForAsync(() => {
+        const httpGetSpy = jest.fn().mockReturnValue(of(characterRecordMock));
+        const { store } = setup(httpGetSpy);
+
+        store.character$.subscribe(character => {
+          expect(character).toEqual(characterRecordMock);
+        });
+
+        store.loadCharacter(characterRecordMock.kanji);
+
+        expect(httpGetSpy).toBeCalledWith(characterRecordMock.kanji);
+        expect(httpGetSpy).toBeCalledTimes(1);
+      }));
+
+      it('clears character record after called and error response from api', waitForAsync(() => {
+        const httpGetSpy = jest.fn().mockImplementation(() => throwError(() => new Error('not found')));
+        const { store } = setup(httpGetSpy);
+
+        store.character$.subscribe(character => {
+          expect(character).toEqual(null);
+        });
+
+        store.loadCharacter('');
+
+        expect(httpGetSpy).toBeCalledWith('');
+        expect(httpGetSpy).toBeCalledTimes(1);
+      }));
     });
   });
 });
