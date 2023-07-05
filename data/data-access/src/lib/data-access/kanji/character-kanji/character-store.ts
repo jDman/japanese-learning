@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { CharacterRecord } from './character-interface';
 import { Observable, switchMap } from 'rxjs';
 import { CharacterHttpService } from './character-http.service';
+import { CharacterRecord } from './character-record-interface';
 
 interface CharacterState {
   character: CharacterRecord | null;
