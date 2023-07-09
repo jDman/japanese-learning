@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { JouyouKanjiStore } from './jouyou-kanji-store';
+import { KanjiStore } from './kanji-store';
 import { first, firstValueFrom } from 'rxjs';
 
-describe(JouyouKanjiStore.name, () => {
+describe(KanjiStore.name, () => {
   function setup() {
     TestBed.configureTestingModule({
-        providers: [JouyouKanjiStore]
+        providers: [KanjiStore]
     });
-    const store = TestBed.inject(JouyouKanjiStore);
+    const store = TestBed.inject(KanjiStore);
 
     return {
       store
@@ -23,7 +23,7 @@ describe(JouyouKanjiStore.name, () => {
     it('initially emits empty jouyouKanji list', async () => {
         const { store } = setup();
 
-        const jouyouKanji = await firstValueFrom(store.jouyouKanji$.pipe(first()));
+        const jouyouKanji = await firstValueFrom(store.kanji$.pipe(first()));
 
         expect(jouyouKanji).toEqual([]);
     });

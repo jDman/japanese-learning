@@ -30,8 +30,7 @@ export class CharacterStore extends ComponentStore<CharacterState> {
       tapResponse(
         (character: CharacterRecord) => this.updateCharacter(character),
         () => { 
-          console.log('#### errroooorrr');
-          return this.updateCharacter(null)
+          return this.updateCharacter(null);
         }
       )
     ))

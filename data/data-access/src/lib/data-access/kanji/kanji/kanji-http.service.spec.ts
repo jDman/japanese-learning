@@ -1,14 +1,12 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { CharacterHttpService } from './character-http.service';
-import { baseUrl } from '../base-url';
+import { KanjiHttpService } from './kanji-http.service';
 import { lastValueFrom } from 'rxjs';
-import { CharacterRecord } from './character-record-interface';
-import { characterRecordMock } from './character-record-mock';
+import { baseUrl } from '../base-url';
 
-describe(CharacterHttpService.name, () => {
-  let service: CharacterHttpService;
+describe(KanjiHttpService.name, () => {
+  let service: KanjiHttpService;
   let controller: HttpTestingController;
 
   beforeEach(() => {
@@ -16,7 +14,7 @@ describe(CharacterHttpService.name, () => {
       imports: [HttpClientTestingModule]
     });
 
-    service = TestBed.inject(CharacterHttpService);
+    service = TestBed.inject(KanjiHttpService);
     controller = TestBed.inject(HttpTestingController);
   });
 
@@ -28,13 +26,11 @@ describe(CharacterHttpService.name, () => {
     expect(service).toBeTruthy();
   });
 
-  it('should map response to null', waitForAsync(() => {
-    // response
-    const response: CharacterRecord | null = null;
+  it('should initially return empty array', waitForAsync(() => {
+    const response: string[] = [];
 
     const value = lastValueFrom(service.get(''));
 
-    //request
     const testRequest = controller.expectOne(request =>
       request.method === 'GET' &&
       request.url.startsWith(baseUrl)
@@ -45,12 +41,24 @@ describe(CharacterHttpService.name, () => {
     expect(value).resolves.toEqual(response);
   }));
 
-  it('should map response to character data', waitForAsync(() => {
-    // response
-    const response: CharacterRecord = characterRecordMock;
+  it('should respond with array of character strings on success', () => {
+    const response: string[] = [
+      '亜',
+      '哀',
+      '愛',
+      '挨',
+      '悪',
+      '握',
+      '圧',
+      '扱',
+      '宛',
+      '安',
+      '暗',
+      '案'
+    ];
 
-    service.get('字').subscribe(data => {
-      expect(data).toEqual(characterRecordMock);
+    service.get('jouyou').subscribe(data => {
+      expect(data).toEqual(response);
     });
 
     //request
@@ -60,13 +68,13 @@ describe(CharacterHttpService.name, () => {
     );
 
     testRequest.flush(response);
-  }));
+  });
 
   it('should catch an error when error response received', waitForAsync(() => {
     // response
     const errMsg = 'an error occurred';
 
-    service.get('字').subscribe({
+    service.get('jouyou').subscribe({
       next: () => fail('a failure occurred'),
       error: (err) => expect(err).toEqual(new Error(errMsg))
     });
