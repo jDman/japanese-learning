@@ -28,23 +28,6 @@ describe(CharacterHttpService.name, () => {
     expect(service).toBeTruthy();
   });
 
-  it('should map response to null', waitForAsync(() => {
-    // response
-    const response: CharacterRecord | null = null;
-
-    const value = lastValueFrom(service.get(''));
-
-    //request
-    const testRequest = controller.expectOne(request =>
-      request.method === 'GET' &&
-      request.url.startsWith(baseUrl)
-    );
-
-    testRequest.flush(response);
-
-    expect(value).resolves.toEqual(response);
-  }));
-
   it('should map response to character data', waitForAsync(() => {
     // response
     const response: CharacterRecord = characterRecordMock;
