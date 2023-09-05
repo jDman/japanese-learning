@@ -3,7 +3,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { CharacterHttpService } from './character-http.service';
 import { baseUrl } from '../base-url';
-import { lastValueFrom } from 'rxjs';
 import { CharacterRecord } from './character-record-interface';
 import { characterRecordMock } from './character-record-mock';
 

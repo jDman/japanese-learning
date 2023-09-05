@@ -1,0 +1,1 @@
+export const characterDetailBaseUrl = 'https://kanjialive-api.p.rapidapi.com/api/public/search/advanced/';

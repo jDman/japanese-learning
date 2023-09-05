@@ -1,1 +1,12 @@
-<p>lessons works!</p>
+<section>
+    <button type="button" (click)="loadJouyouKanji()">Jouyou</button>
+    <button type="button" (click)="loadJinmeiyouKanji()">Jinmeiyou</button>
+    
+    <div *ngIf="kanji$ | async">
+        <ul>
+            <li *ngFor="let kanji of kanji$ | async; let i = index">
+                <h3>{{ kanji }}</h3>
+            </li>
+        </ul>
+    </div>
+</section>
